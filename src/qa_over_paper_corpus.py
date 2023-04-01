@@ -11,9 +11,10 @@ PINECONE_API_ENV = PINECONE_ENV
 os.environ["OPENAI_API_KEY"] = OPENAI_TOKEN 
 DIRNAME = Path(__file__).resolve().parents[1]
 
-# This might be faster, so try this tomorrow: https://python.langchain.com/en/latest/modules/indexes/document_loaders/examples/pdf.html#using-pymupdf
+# More on Document Loaders:
+# https://python.langchain.com/en/latest/modules/indexes/document_loaders.html
+# https://python.langchain.com/en/latest/modules/indexes/document_loaders/examples/pdf.html#using-pymupdf
 if __name__ == "__main__":
-    from langchain.document_loaders import PyMuPDFLoader
     loader = DirectoryLoader(
         path=f'{DIRNAME}/data/papers/',
         glob='**/*.pdf',
