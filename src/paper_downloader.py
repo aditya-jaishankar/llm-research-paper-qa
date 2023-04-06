@@ -23,27 +23,23 @@ class Paper:
         field: str,
         language_model: ChatOpenAI,
     ):
-        """ """
+        """ 
+        TODO: Add doc string
+        """
         self.result = result
         self.template = template
         self._entry_id = result.entry_id
         self._field = field
-        self._relevance = ''
-        self._abstract = (
-            self.result.title
-            + '. '
-            + self.result.summary
-        ).replace('\n', ' ')
-        self.input_variables_dict = {
-            "field": self._field,
-            "abstract": self._abstract
-        }
+        self._relevance = ""
+        self._abstract = (self.result.title + ". " + self.result.summary).replace(
+            "\n", " "
+        )
+        self.input_variables_dict = {"field": self._field, "abstract": self._abstract}
         self.language_model = language_model
 
-    
     def is_paper_relevant(self):
         """
-
+        TODO: Add doc string
         """
         return call_chatgpt_endpoint(
             model=self.language_model,
@@ -51,39 +47,38 @@ class Paper:
             input_variables_dict=self.input_variables_dict,
         )
 
-
     def to_dict(self):
         """
-        
+        TODO: Add doc string
         """
         return {
-            'result': paper.result,
-            'title': paper.result.title,
-            'summary': paper.result.summary,
-            'is_relevant': paper._relevance
+            "result": paper.result,
+            "title": paper.result.title,
+            "summary": paper.result.summary,
+            "is_relevant": paper._relevance,
         }
-
 
     def update_relevance(self):
         self._relevance = self.is_paper_relevant()
 
-
     def download_paper(self, dirpath=DIRNAME):
         """
-        
+        TODO: Add doc string
         """
         write_folder = f"{dirpath}/data/papers/{(self._field).replace(' ', '_')}/"
         Path(write_folder).mkdir(parents=True, exist_ok=True)
-        if 'yes' in (self._relevance).lower():
+        if "yes" in (self._relevance).lower():
             self.result.download_pdf(
                 dirpath=write_folder,
-                filename=(paper._entry_id.split('/')[-1]).replace('.', '_') + '.pdf'
+                filename=(paper._entry_id.split("/")[-1]).replace(".", "_") + ".pdf",
             )
         return None
-            
+
 
 def retrieve_papers(query: str, max_results: int = 10):
-    """ """
+    """
+    TODO: Add doc string
+    """
     papers = arxiv.Search(
         query=query,
         max_results=max_results,
@@ -93,10 +88,9 @@ def retrieve_papers(query: str, max_results: int = 10):
 
 
 if __name__ == "__main__":
-
     results = retrieve_papers(query="Lithium Ion Phosphate", max_results=500)
-    
-    # Prompt Engineering principles can probably improve the performance of this zero-shot classifier. 
+
+    # Prompt Engineering principles can probably improve the performance of this zero-shot classifier.
     template = """
         I want you to act as a helpful, skilled and experienced research scientist in the field of {field}. I will provide with an abstract of a peer reviewed research paper, and I would like you to return "Yes" if the abstract is related to {field} research, and "No" if you think the abstract is not related to {field} research. Only return the words "Yes" or "No", without any further explanation.
 
@@ -111,4 +105,3 @@ if __name__ == "__main__":
         paper = Paper(result, template, field, language_model=gpt3p5)
         paper.update_relevance()
         paper.download_paper()
-    
