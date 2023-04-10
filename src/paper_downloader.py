@@ -1,12 +1,11 @@
 import os
-import time
 
 import arxiv
 from langchain.chat_models import ChatOpenAI
 from tqdm import tqdm
-from Paper import Paper
 
 from api_keys import OPENAI_TOKEN
+from Paper import Paper
 
 tqdm.pandas()
 
