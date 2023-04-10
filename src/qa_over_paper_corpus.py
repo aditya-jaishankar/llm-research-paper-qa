@@ -1,18 +1,17 @@
 import os
 from pathlib import Path
 
-from langchain.document_loaders import DirectoryLoader, PyMuPDFLoader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Pinecone
-from langchain.llms import OpenAI
-from langchain.docstore.document import Document
-from langchain.chains.qa_with_sources import load_qa_with_sources_chain
-
 import pinecone
+from langchain.chains.qa_with_sources import load_qa_with_sources_chain
+from langchain.docstore.document import Document
+from langchain.document_loaders import DirectoryLoader, PyMuPDFLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms import OpenAI
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Pinecone
 
+from api_keys import OPENAI_TOKEN, PINECONE_ENV, PINECONE_TOKEN
 from utils import PineconeCustom
-from api_keys import OPENAI_TOKEN, PINECONE_TOKEN, PINECONE_ENV
 
 PINECONE_API_KEY = PINECONE_TOKEN
 PINECONE_API_ENV = PINECONE_ENV
