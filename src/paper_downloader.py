@@ -1,4 +1,5 @@
 import os
+import argparse
 
 import arxiv
 from langchain.chat_models import ChatOpenAI
@@ -10,7 +11,6 @@ from Paper import Paper
 tqdm.pandas()
 
 os.environ["OPENAI_API_KEY"] = OPENAI_TOKEN
-
 
 def retrieve_papers(query: str, max_results: int = 10):
     """
@@ -24,8 +24,19 @@ def retrieve_papers(query: str, max_results: int = 10):
     return papers
 
 
-if __name__ == "__main__":
-    results = retrieve_papers(query="Lithium Ion Phosphate", max_results=500)
+def download_papers(
+    query:str="Lithium Ion Phosphate",
+    field:str="Batteries"
+):
+    """
+    Downloads papers from the arxiv
+    Args:
+        query: The search query
+        field: The field of science to check for paper relevance
+    returns:
+        None. Downloads papers and stores to disk
+    """
+    results = retrieve_papers(query=query, max_results=500)
 
     # Prompt Engineering principles can probably improve the performance of this zero-shot classifier.
     template = """
@@ -35,7 +46,6 @@ if __name__ == "__main__":
 
         Answer:
     """
-    field = "batteries"
     gpt3p5 = ChatOpenAI(model_name="gpt-3.5-turbo", request_timeout=30)
 
     for result in tqdm(results):
