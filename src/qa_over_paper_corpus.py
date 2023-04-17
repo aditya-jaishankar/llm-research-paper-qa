@@ -75,7 +75,18 @@ def update_metadata_for_texts(document: Document):
     return document_new
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
+def qa_over_paper_corpus(
+    question:str="How does the inclusion of carbon help make batteries more performant?",
+    field:str="batteries"
+):
+    """
+    Accepts a question and asks the question over the corpus of downloaded papers. The paper corpus is specified by the field argument, which specifies the subdirectory of the corpus. 
+
+    Args:
+        question: The research question to ask the corpus
+        field: the relative subdirectory path where the paper corpus is stored
+    """
     # Initialize an embeddings model.
     # Currently only ada embeddings are available: https://openai.com/pricing
     embeddings = OpenAIEmbeddings(openai_api_key=os.environ["OPENAI_API_KEY"])
@@ -95,7 +106,7 @@ if __name__ == "__main__":
     # https://python.langchain.com/en/latest/modules/indexes/document_loaders/examples/pdf.html#using-pymupdf
     if EMBED_PAPERS:
         loader = DirectoryLoader(
-            path=f"{DIRNAME}/data/papers/batteries/",
+            path=f"{DIRNAME}/data/papers/{field}/",
             glob="**/*.pdf",
             loader_cls=PyMuPDFLoader,
             silent_errors=True,
@@ -126,7 +137,7 @@ if __name__ == "__main__":
 
     print_answer(
         search_index=search_index,
-        question="How does the inclusion of carbon help make batteries more performant?",
+        question=question,
     )
 
     # Alternate implementation to answer question, but doesn't return sources at the
