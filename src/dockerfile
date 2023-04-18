@@ -13,3 +13,4 @@ COPY paper_downloader.py /app/paper_downloader.py
 COPY qa_over_paper_corpus.py /app/qa_over_paper_corpus.py
 
 WORKDIR /app
+ENTRYPOINT ["python" "/app/main.py"]
