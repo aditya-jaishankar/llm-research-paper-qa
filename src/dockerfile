@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+COPY requirements.txt /app/requirements.txt
+RUN apt-get update && \ 
+    apt-get -y install g++ && \
+    apt-get -y install python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+RUN pip install -r /app/requirements.txt
+
+COPY Paper.py /app/Paper.py
+COPY utils.py /app/utils.py
+COPY paper_downloader.py /app/paper_downloader.py
+COPY qa_over_paper_corpus.py /app/qa_over_paper_corpus.py
+
+WORKDIR /app
+ENTRYPOINT ["python" "/app/main.py"]
